@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
 
 
     [SerializeField] public GameObject player = default;
+    [SerializeField] public ObjectManager objectManager = default;
 
     private SpriteRenderer spriteRenderer = default;
 
@@ -30,6 +31,22 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void OnEnable()
+    {
+        switch (enemyName)
+        {
+            case "L":
+                health = 50;
+                break;
+            case "M":
+                health = 15;
+                break;
+            case "s":
+                health = 3;
+                break;
+        }
     }
 
     private void Start()
@@ -52,19 +69,25 @@ public class Enemy : MonoBehaviour
 
         if (enemyName == "S")
         {
-            GameObject bullet = Instantiate(bulletObjA, transform.position, Quaternion.identity);
+            GameObject bullet = objectManager.MakeObj("BulletEnemyA");
+            bullet.transform.position = transform.position;
+
             Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
             Vector3 dirVec = player.transform.position - transform.position;
             rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
         }
         else if (enemyName == "L")
         {
-            GameObject bulletR = Instantiate(bulletObjB, transform.position + Vector3.right * 0.3f, Quaternion.identity);
+            GameObject bulletR = objectManager.MakeObj("BulletEnemyB");
+            bulletR.transform.position = transform.position;
+
             Rigidbody2D rigidR = bulletR.GetComponent<Rigidbody2D>();
             Vector3 dirVecR = player.transform.position - (transform.position + Vector3.right * 0.3f);
             rigidR.AddForce(dirVecR.normalized * 7, ForceMode2D.Impulse);
 
-            GameObject bulletL = Instantiate(bulletObjB, transform.position + Vector3.left * 0.3f, Quaternion.identity);
+            GameObject bulletL = objectManager.MakeObj("BulletEnemyB");
+            bulletL.transform.position = transform.position;
+
             Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
             Vector3 dirVecL = player.transform.position - (transform.position + Vector3.left * 0.3f);
             rigidL.AddForce(dirVecL.normalized * 7, ForceMode2D.Impulse);
@@ -103,18 +126,22 @@ public class Enemy : MonoBehaviour
             }
             else if (ran < 6)
             {
-                Instantiate(itemCoin, transform.position, Quaternion.identity);
+                GameObject itemCoin = objectManager.MakeObj("ItemCoin");
+                itemCoin.transform.position = transform.position;
             }   //  else if : Coin
             else if (ran < 7)
             {
-                Instantiate(itemPower, transform.position, Quaternion.identity);
+                GameObject itemPower = objectManager.MakeObj("ItemPower");
+                itemPower.transform.position = transform.position;
             }   //  else if : Power
             else if (ran < 8)
             {
-                Instantiate(itemBoom, transform.position, Quaternion.identity);
+                GameObject itemBoom = objectManager.MakeObj("ItemBoom");
+                itemBoom.transform.position = transform.position;
             }   //  else if : Boom
 
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            transform.rotation = Quaternion.identity;
         }
     }
 
@@ -127,14 +154,15 @@ public class Enemy : MonoBehaviour
     {
         if (collision.CompareTag("BorderBullet"))
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            transform.rotation = Quaternion.identity;
         }
         else if (collision.CompareTag("PlayerBullet"))
         {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
             OnHit(bullet.dmg);
 
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
 }
