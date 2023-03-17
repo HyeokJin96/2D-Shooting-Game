@@ -4,13 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
     public string[] enemyObjs;
     public Transform[] spawnPoints;
 
-    public float maxSpawnDelay;
+    public float nextSpawnDelay;
     public float curSpwanDelay;
 
     public GameObject player = default;
@@ -21,20 +22,64 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverSet = default;
     public ObjectManager objectManager = default;
 
+    public List<Spawn> spawnList = default;
+    public int spawnIndex = default;
+    public bool spawnEnd = false;
+
     private void Awake()
     {
+        spawnList = new List<Spawn>();
         enemyObjs = new string[] { "EnemyS", "EnemyM", "EnemyL"};
+
+
+    }
+
+    void ReadSpawnFile()
+    {
+        //  변수 초기화
+        spawnList.Clear();
+        spawnIndex = 0;
+        spawnEnd = false;
+
+        //  리스폰 파일 읽기
+        TextAsset textFile = Resources.Load("Stage 0") as TextAsset;
+        StringReader stringReader = new StringReader(textFile.text);
+
+        while (stringReader != null)
+        {
+            string line = stringReader.ReadLine();
+
+            Debug.Log(line);
+
+            if (line == null)
+            {
+                break;
+            }
+
+            //  리스폰 데이터 생성
+            Spawn spawnData = new Spawn();
+            spawnData.delay = float.Parse(line.Split(',')[0]);
+            spawnData.type = line.Split(',')[1];
+            spawnData.point = int.Parse(line.Split(',')[2]);
+            spawnList.Add(spawnData);
+        }
+
+        //  텍스트 파일 닫기
+        stringReader.Close();
+
+        //  첫 번째 스폰 딜레이 적용
+        nextSpawnDelay = spawnList[0].delay;
     }
 
     private void Update()
     {
         curSpwanDelay += Time.deltaTime;
 
-        if (curSpwanDelay > maxSpawnDelay)
+        if (curSpwanDelay > nextSpawnDelay)
         {
             SpawnEnemy();
 
-            maxSpawnDelay = Random.Range(0.5f, 3f);
+            nextSpawnDelay = Random.Range(0.5f, 3f);
             curSpwanDelay = 0;
         }
 
