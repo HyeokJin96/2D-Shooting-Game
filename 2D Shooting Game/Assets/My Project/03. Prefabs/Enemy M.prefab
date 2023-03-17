@@ -151,8 +151,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0a19fce817a66c44b6c75c082ec5307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  enemyName: M
+  speed: 3
   health: 15
   sprites:
   - {fileID: -1147401495359466748, guid: 83956f0065ccf7f449493f09c81cfbc1, type: 3}
   - {fileID: -7844560889915226194, guid: 83956f0065ccf7f449493f09c81cfbc1, type: 3}
+  bulletObjA: {fileID: 107911068817875126, guid: 27ab98ebc3d4dfb4da6bc6ac22ee31bb, type: 3}
+  bulletObjB: {fileID: 107911068817875126, guid: 08c675af5e85a3d44b4fbe95194a395b, type: 3}
+  itemCoin: {fileID: 3987713320469518631, guid: a7794b0e8e8d088479feef9c0f2fb39f, type: 3}
+  itemPower: {fileID: 5154538498138442258, guid: cd157aaf495ab274995b4a86041f3d1a, type: 3}
+  itemBoom: {fileID: 3111781019701887534, guid: 6bf7c4d5976053d4a9033e02786045db, type: 3}
+  player: {fileID: 0}
+  ememyScore: 200
