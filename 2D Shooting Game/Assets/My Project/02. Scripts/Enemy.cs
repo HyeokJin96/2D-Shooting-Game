@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
         switch (enemyName)
         {
@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour
             case "M":
                 health = 15;
                 break;
-            case "s":
+            case "S":
                 health = 3;
                 break;
         }
