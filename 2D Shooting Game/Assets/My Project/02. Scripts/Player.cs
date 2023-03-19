@@ -32,6 +32,8 @@ public class Player : MonoBehaviour
     [SerializeField] public GameManager gameManager = default;
     [SerializeField] public ObjectManager objectManager = default;
 
+    [SerializeField] public GameObject[] followers = default;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -41,7 +43,7 @@ public class Player : MonoBehaviour
     {
         speed = 3f;
         power = 1;
-        maxPower = 3f;
+        maxPower = 6f;
         boom = 0;
         maxBoom = 3f;
         maxShotDelay = 0.15f;
@@ -117,7 +119,7 @@ public class Player : MonoBehaviour
                 Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
                 rigidL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
-            case 3:
+            default:
                 GameObject bulletRR = objectManager.MakeObj("BulletPlayerA");
                 bulletRR.transform.position = transform.position + Vector3.right * 0.4f;
 
@@ -284,6 +286,7 @@ public class Player : MonoBehaviour
                     else
                     {
                         power++;
+                        AddFollower();
                     }
                     break;
                 case "Boom":
@@ -300,6 +303,22 @@ public class Player : MonoBehaviour
             }
 
             collision.gameObject.SetActive(false);
+        }
+    }
+
+    void AddFollower()
+    {
+        if (power == 4)
+        {
+            followers[0].SetActive(true);
+        }
+        else if (power == 5)
+        {
+            followers[1].SetActive(true);
+        }
+        else if (power == 6)
+        {
+            followers[2].SetActive(true);
         }
     }
 

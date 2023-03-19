@@ -24,7 +24,7 @@ public class Follower : MonoBehaviour
     {
         maxShotDelay = 2f;
 
-        followDelay = 0;
+        followDelay = 100;
     }
 
     private void Update()
@@ -38,14 +38,20 @@ public class Follower : MonoBehaviour
     private void Watch()
     {
         //  Input Pos
-        parentPos.Enqueue(parent.position);
+        if (!parentPos.Contains(parent.position))
+        {
+            parentPos.Enqueue(parent.position);
+        }
 
         //  OutPut Pos
-        //if (parentPos.Count)
+        if (parentPos.Count > followDelay)
         {
-
+            followPos = parentPos.Dequeue();
         }
-        followPos = parentPos.Dequeue();
+        else if (parentPos.Count < followDelay)
+        {
+            followPos = parent.position;
+        }
     }
 
     private void Follow()
