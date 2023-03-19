@@ -158,4 +158,8 @@ MonoBehaviour:
   itemPower: {fileID: 5154538498138442258, guid: cd157aaf495ab274995b4a86041f3d1a, type: 3}
   itemBoom: {fileID: 3111781019701887534, guid: 6bf7c4d5976053d4a9033e02786045db, type: 3}
   player: {fileID: 0}
+  objectManager: {fileID: 0}
   ememyScore: 500
+  patternIndex: -1
+  curPatternCount: 0
+  maxPatternCount: 
